@@ -3,17 +3,10 @@ from .models import OrderStatus
 
 # Create your models here.
 class Order(models.Model):
-    customer = models.ForeignKey('customer',on_delete=models.CASCADE)
-    
-    status = models.ForeignKey(
-        OrderStatus,
-        on_delete = models.SET_NULL,
-        null=True,
-        blank=True
-    )
-    total_amount = models.DecimalField(max_digits=10,decimal_place=2)
-    created_at = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=50,unique=True)
 
     def __str__(self):
-        return f" Order #{self.id} - {self.customer}"
+        return self.name
+
+    
 
