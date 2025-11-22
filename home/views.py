@@ -5,7 +5,7 @@ from rest_framework.generics import ListAPIView
 
 # Create your views here.
 
-class MenuCategoryViewSet(ListAPIView):
+class MenuCategoryListView(ListAPIView):
     queryset = MenuCategory.objects.all()
     serailzer_class = MenuCategorySerializer
 
