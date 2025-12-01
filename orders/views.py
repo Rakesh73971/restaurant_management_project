@@ -3,7 +3,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.utils import timezone
-from .models import Coupon
+from .models import Coupon, Order
+from rest_framework.permissions import IsAuthenticated
+from .serializers import OrderSerializer
+
 
 # Create your views here.
 
@@ -34,3 +37,13 @@ class CouponValidationView(APIView):
             "discount_percentage":coupon.discount_percentage
         },status=status.HTTP_200_OK)
 
+
+class OrderHistoryView(APIView):
+    permissions_classes = [IsAuthenticated]
+
+    def get(self,request):
+        #Get all orders belonging to the logged-in user
+        orders = Order.objects.filter(user=request.user).order_by('-date')
+        serializer = OrderSerializer(orders,many=True)
+        return Response(serializer.data)
+        
