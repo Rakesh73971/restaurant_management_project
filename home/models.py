@@ -14,3 +14,10 @@ class MenuItem(models.Model):
     def __str__(self):
         return self.name
 
+class Restaurant(models.Model):
+    name = models.CharField(max_length=200)
+    address = models.TextField()
+    has_delivery = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
