@@ -21,3 +21,23 @@ class Restaurant(models.Model):
 
     def __str__(self):
         return self.name
+
+class DailySpecial(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    price = models.DecimalField(max_digits=10,decimal_places=2)
+    image = models.ImageField(upload_to='specials/',null=True,blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+
+    @staticmethod
+    def get_random_special():
+        """ 
+        Returns a random DailySpecial object.
+        If none exist, returns None.
+        """
+        specials = DailySpecial.objects.order_by('?')
+        return specials.first() if specials.exists() else None
+
+    def __str__(self):
+        return self.title
