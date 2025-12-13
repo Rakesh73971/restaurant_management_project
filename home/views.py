@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from .models import MenuCategory,MenuItem
+from .models import MenuCategory,MenuItem,IngredientSerializer
 from .serailzers import MenuCategorySerializer,MenuItemSerializer
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView,RetrieveAPIView
 from django.db.models import Q
 from .pagination import MenuItemPagination
 from rest_framework import viewsets
+
 
 # Create your views here.
 
@@ -41,4 +42,15 @@ class MenuItemSearchViewSet(viewsets.ViewSet):
         serializer = MenuItemSerializer(result_page,many=True)
 
         return pagination.get_paginated_response(serializer.data)
+
+
+class MenuItemIngredientView(RetrieveAPIView):
+    queryset = MenuItem.objects.all()
+
+    def retrieve(self,request,*args,**kwargs):
+        menu_item = self.get_object()
+        ingredients = menu_item.ingredients.all()
+
+        serializer = IngredientSerializer(ingredients,many=True)
+        return Response(serializer.data,status=status.HTTP_200_OK)
 
